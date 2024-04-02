@@ -166,7 +166,7 @@
                         When "Append" is used, the payload is added to the already existing payload in the newest dataset.
                     statisticsObject:
                       type: string
-                      description: This is the payload needs to be added/appended for the Graph/Table
+                      description: This is the JSON payload needs to be added/appended for the Graph/Table
           responses:
             '200':
               description: Processing done, Ok
