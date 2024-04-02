@@ -1,13 +1,13 @@
     openapi: 3.0.3
     info:
       version: 0.0.1
-      title: API to Powershell Universal IT services portal - by Microb.vn
+      title: Management API to IT services portal - by Microb.vn
       description: |-
-        A Set of API's to communicate with the Powershell Universal IT services portal.
+        A Set of API's to communicate with the IT services portal.
         It provides access to tables to fill statistics graphs published by the portal
         and endpoint to retrieve and update outstanding requests made by the portal /users
     servers:
-      - url: http://192.168.123.200:5000/cli/api
+      - url: http://srvr2019.coda.local:5000/cli/api
         description: Our current test server
     paths:
       /request/{type}:
@@ -98,6 +98,75 @@
                       type: string
                       description: Optional set of notes. Can include Cr/Lf characters
 
+          responses:
+            '200':
+              description: Processing done, Ok
+            '400':
+              description: "Bad request. (with optional error details)"
+      /stats/{client}:
+        delete:
+          summary: Removes old entries that were used to display in graph or table.
+          parameters:
+          - name: client
+            in: path
+            required: true
+            description: |-
+              Must be an existing client code.<br>
+            schema:
+              type : string
+          requestBody:
+            description: Delete Payload
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - deletePayload
+                  properties:
+                    ElementType:
+                      type: string
+                      description: Required! Must contain the Element type of the data to remove
+                    before:
+                      type: string
+                      description: Required! Must contain a valid date in format 'yyyy-MM-dd HH:mm:ss'
+          responses:
+            '200':
+              description: Processed, (Result was -amount removed-)
+            '400':
+              description: "Bad request. (with optional error details)"
+        post:
+          summary: Adds Graph/Table statistics entries found in payload.
+          parameters:
+          - name: client
+            in: path
+            required: true
+            description: |-
+              Must be an existing client code.<br>
+            schema:
+              type : string
+          requestBody:
+            description: Post Payload
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - updatePayload
+                  properties:
+                    elementType:
+                      type: string
+                      description: Required! Indicates which graph/table is target for the posted data.
+                    elementAction:
+                      type: string
+                      description: |-
+                        Required. Must be either "AddNew" or "Append".
+                        When "AddNew" is used, a new dataset is created, with a new date-time stamp
+                        When "Append" is used, the payload is added to the already existing payload in the newest dataset.
+                    statisticsObject:
+                      type: string
+                      description: This is the payload needs to be added/appended for the Graph/Table
           responses:
             '200':
               description: Processing done, Ok
