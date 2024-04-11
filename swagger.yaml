@@ -18,9 +18,9 @@
             in: path
             required: true
             description: |-
-              Either the value 'open', 'process' or an integer value.<br>
-              - 'open' will return all open requests with a maximum of 15 per call.<br>
-              - 'process' will return all requestsID's (only) of open requests with a maximum of 15 per call, and set the status of these requests into 'InProgess'.<br>
+              Either the value 'open[int]', 'process[int]' or an integer value.<br>
+              - 'open[int]' will return all open requests with a maximum of [int] per call.<br> >> [int]is an optional number greater than 1
+              - 'process[int]' will return all requestsID's (only) of open requests with a maximum of [int] per call, and set the status of these requests into 'InProgess'.<br> >> [int]is an optional number greater than 1
               - any numeric value will return the entry where cliRequestID matches the entered number.<br>
               
             schema:
@@ -68,7 +68,7 @@
         put:
           summary: Updates a request based on body payload content .
           parameters:
-          - name: Type
+          - name: type
             in: path
             required: true
             description: |-
